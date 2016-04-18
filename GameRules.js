@@ -7,7 +7,7 @@ function GameRules(levelScene) {
     this.playerRunner = levelScene.playerRunner;
     this.hud = levelScene.hud;
     this.playerController= new KeyboardController();
-
+    this.playerController.bindScene(levelScene);
     this.secondsToGo=0;
 }
 
@@ -18,7 +18,7 @@ var _gameRule_none = function()
 var _gameRule_play = function()
 {
     var win = (this.playerRunner.stamina>0 && this.playerRunner.selfEsteem>=100);
-    var lose = (this.playerRunner.stamina<=0);
+    var lose = (this.playerRunner.stamina<=0|| this.playerRunner.selfEsteem<=0);
     
     if(win || lose)
     {

@@ -13,7 +13,6 @@ function MenuScene() {
     );
     button.addChild(message);
     
-    
     this.addChild(button);
 
     this.interactive = true;

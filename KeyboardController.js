@@ -3,22 +3,45 @@ function KeyboardController() {
     var leftAscii = 37;
     this.rightKey = keyboard(rightAscii);
     this.leftKey = keyboard(leftAscii);
-    
+    var thisObject = this;
+    this.rightKey.press = function () { thisObject.act(); }
+    this.leftKey.press = function () { thisObject.act();  }
   
 
 }
 KeyboardController.constructor = KeyboardController;
-KeyboardController.prototype.bind = function (runner) {
-    this.rightKey.press = function () { runner.rightFootDown() }
-    this.rightKey.release = function () { runner.footUp() }
-    this.leftKey.press = function () { runner.leftFootDown() }
-    this.leftKey.release = function () { runner.footUp() }
+KeyboardController.prototype.bind = function (_runner) {
+    this.runner=_runner;
 }
 KeyboardController.prototype.unbind = function () {
-    this.rightKey.press = function () { }
-    this.rightKey.release = function () { }
-    this.leftKey.press = function () { }
-    this.leftKey.release = function () {  }
+   this.runner=null;
+}
+KeyboardController.prototype.bindScene=function(levelScene)
+{   var thisObject=this;
+    levelScene.interactive=true;
+    //add transparent screen on top of everything.
+    
+    var innerBar = new PIXI.Graphics();
+    innerBar.beginFill(0x000000);
+    innerBar.drawRect(0, 0, game.width, game.height);
+    innerBar.endFill();
+    innerBar.alpha=.0;
+    innerBar.interactive=true;
+    
+    levelScene.addChild(innerBar);
+
+    
+    innerBar.click=innerBar.tap = function (data) {
+        thisObject.act();
+    }
+}
+
+KeyboardController.prototype.act=function()
+{
+    if(this.runner)
+    {
+        this.runner.footDown();
+    }
 }
 
 function keyboard(keyCode) {

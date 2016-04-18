@@ -31,34 +31,23 @@ Runner.constructor = Runner;
 Runner.prototype = Object.create(PIXI.Container.prototype);
 Runner.prototype.reset = function () {
     this.currentSpeed = 0;
-    this.selfEsteem = 0;
+    this.selfEsteem = 50;
     this.recoveryRate = .8;
     this.stamina = 100;
     this.baseSpeed=1;
 }
-Runner.prototype.footUp = function () {
-    var thisObject = this;
-    this.footNterr = true;
-    setTimeout(function () {
-        thisObject.footNterr = false;
-    }, 35);
-}
-Runner.prototype.rightFootDown =
+Runner.prototype.footDown =
     function () {
-        if (!this.footNterr && this.nextStep == 0) {
+        if (!this.footNterr ) {
             this.footNterr = true;
             this.currentSpeed += 5;
-            this.nextStep = 1;
+            var thisObject=this;
+            setTimeout(function () {
+                thisObject.footNterr = false;
+            }, 35);
         }
     }
 
-Runner.prototype.leftFootDown = function () {
-    if (!this.footNterr && this.nextStep == 1) {
-        this.footNterr = true;
-        this.currentSpeed += 5;
-        this.nextStep = 0;
-    }
-}
 Runner.prototype.update = function () {
     var totalSpeed = this.currentSpeed+this.baseSpeed;
     this.position.x += totalSpeed;
